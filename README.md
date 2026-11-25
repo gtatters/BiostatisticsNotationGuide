@@ -1,4 +1,4 @@
-# Biostatistics Notational Guide
+# Biostatistics Notational Practice
 
 An interactive Shiny app where biology students practise **reading statistical notation and doing the arithmetic it asks for**. It is built for students who know what a mean or a t-test is, but get stuck on the formulas themselves: what a subscript means, what a square root covers, whether to square before or after adding, which column of a table to read.
 
@@ -10,7 +10,7 @@ Developed by Glenn Tattersall (Department of Biological Sciences, Brock Universi
 
 ## What students do
 
-- **Pick a topic** from the menus. Each topic shows a random set of 6 questions drawn from a larger bank.
+- **Pick a topic** from the tabs. Each topic shows a random set of 6 questions drawn from a larger bank.
 - **Answer and check.** Feedback gives the correct answer, a short plain-language explanation that names the common mistake, the arithmetic worked step by step, and, for calculations, the **R code** that works out the same answer, using the same numbers. This links the notation to the code students write in the labs.
 - **Practise again.** "New numbers" gives a calculation question a fresh dataset. "New set of questions" draws a different mix and favours questions not yet tried.
 - **Reflect.** The Summary tab scores first attempts only, by topic and by skill, and links back to questions worth another look.
@@ -25,20 +25,22 @@ Every question practises one of three skills:
 
 ## Topics
 
-| Menu | Topic | Examples |
-|---|---|---|
-| Foundations | 0. Basics | ≥ and ≤, comparing decimals, squaring negatives, negative exponents, ln and eˣ, R's `1.5e-04` notation, calculator brackets |
-| | 1. Descriptive | Σ(Yᵢ)² vs (ΣYᵢ)², s and s², SE, median and quartile positions |
-| | 2. Probability | "or", "and", "given", complements, Bayes' theorem |
-| Categorical data | 3. Proportions | Binomial formula, n choose X, p vs p̂ vs p′ vs p₀ vs P |
-| | 4. Goodness of fit | The χ² statistic, degrees of freedom, critical values, the Poisson formula |
-| | 5. Categorical | Expected counts, (r − 1)(c − 1), odds, odds ratio, relative risk |
-| Comparing means | 6. Normal distribution | Z for an observation vs a mean, Z tables, continuity correction |
-| | 7. t-tests | t subscripted α(2) vs α(1), one-sample, paired and two-sample t, pooled variance |
-| | 8. Non-parametric | Transformations (Y′), ranks and ties, Mann-Whitney U, sign test |
-| | 9. ANOVA | N vs nᵢ vs k, SS, MS, F, R², Tukey-Kramer q |
-| Relationships & design | 10. Correlation & regression | Sums of products, r, Fisher's z, Ŷ and residuals, slope and its SE |
-| | 11. Models & design | Model statements (A*B), adjusted R², sample size, Cohen's d, power and β |
+| Tab | Examples |
+|---|---|
+| 1. Basics | ≥ and ≤, comparing decimals, squaring negatives, negative exponents, ln and eˣ, R's `1.5e-04` notation, calculator brackets |
+| 2. Descriptive | Σ(Yᵢ)² vs (ΣYᵢ)², s and s², SE, median and quartile positions |
+| 3. Probability | "or", "and", "given", complements, Bayes' theorem |
+| 4. Proportions | Binomial formula, n choose X, p vs p̂ vs p′ vs p₀ vs P |
+| 5. Goodness of fit | The χ² statistic, degrees of freedom, critical values, the Poisson formula |
+| 6. Categorical | Expected counts, (r − 1)(c − 1), odds, odds ratio, relative risk |
+| 7. Normal distribution | Z for an observation vs a mean, Z tables, continuity correction |
+| 8. t-tests | t subscripted α(2) vs α(1), one-sample, paired and two-sample t, pooled variance |
+| 9. Non-parametric | Transformations (Y′), ranks and ties, Mann-Whitney U, sign test |
+| 10. ANOVA | N vs nᵢ vs k, SS, MS, F, R², Tukey-Kramer q |
+| 11. Correlation & regression | Sums of products, r, Fisher's z, Ŷ and residuals, slope and its SE |
+| 12. Models & design | Model statements (A*B), adjusted R², sample size, Cohen's d, power and β |
+
+The tab numbers only set the order of the topics. On an iPad, the tabs wrap onto two or three rows.
 
 The bank currently holds 162 questions, with at least 12 per topic. About two-thirds of them generate new numbers on each visit.
 
@@ -122,7 +124,7 @@ When you write an `rcode` entry, make it end with the answer, so that running th
 
 ### Adding a topic
 
-Topics are defined near the top of `app.R`. Add an entry to `sections` (tab label), `section_title`, `section_intro` (sidebar text) and `tips` (the topic's reading tips), then add the new key to one of the `tab_groups` menus.
+Topics are defined near the top of `app.R`. Add an entry to `sections` (tab label), `section_title`, `section_intro` (sidebar text) and `tips` (the topic's reading tips), then add a matching `section_tab("key")` line to the tab list in the UI.
 
 ## Design notes
 

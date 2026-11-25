@@ -66,18 +66,18 @@ orange <- "#E07B39"
 grey   <- "#C8C8C8"
 
 # ---- sections: one tab per topic ---------------------------------------------
-sections <- c(basics      = "0. Basics",
-              descriptive = "1. Descriptive",
-              probability = "2. Probability",
-              proportions = "3. Proportions",
-              fitting     = "4. Goodness of fit",
-              categorical = "5. Categorical",
-              normal      = "6. Normal distribution",
-              ttests      = "7. t-tests",
-              nonparam    = "8. Non-parametric",
-              anova       = "9. ANOVA",
-              regression  = "10. Correlation & regression",
-              models      = "11. Models & design")
+sections <- c(basics      = "1. Basics",
+              descriptive = "2. Descriptive",
+              probability = "3. Probability",
+              proportions = "4. Proportions",
+              fitting     = "5. Goodness of fit",
+              categorical = "6. Categorical",
+              normal      = "7. Normal distribution",
+              ttests      = "8. t-tests",
+              nonparam    = "9. Non-parametric",
+              anova       = "10. ANOVA",
+              regression  = "11. Correlation & regression",
+              models      = "12. Models & design")
 
 section_title <- c(basics      = "Basic operations and your calculator",
                    descriptive = "Descriptive statistics and estimating uncertainty",
@@ -91,14 +91,6 @@ section_title <- c(basics      = "Basic operations and your calculator",
                    anova       = "Analysis of variance (ANOVA)",
                    regression  = "Correlation and regression",
                    models      = "Linear models and study design")
-
-# Tabs are grouped into dropdown menus so they fit on one row on an iPad
-tab_groups <- list(
-  "Foundations"            = c("basics", "descriptive", "probability"),
-  "Categorical data"       = c("proportions", "fitting", "categorical"),
-  "Comparing means"        = c("normal", "ttests", "nonparam", "anova"),
-  "Relationships & design" = c("regression", "models")
-)
 
 skills <- c(symbols     = "Symbols",
             structure   = "Reading structure",
@@ -544,8 +536,8 @@ ui <- fluidPage(
           h4(style = paste0("color:", teal, ";"), "How it works"),
           tags$ol(
             style = "font-size:16px; line-height:1.9;",
-            tags$li(strong("Pick a topic"), " from the menus above. ",
-                    strong("0. Basics"), " (under Foundations) covers arithmetic and ",
+            tags$li(strong("Pick a topic"), " from the tabs above. ",
+                    strong("1. Basics"), " covers arithmetic and ",
                     "calculator skills; if maths is not your strong point, start ",
                     "there. The other topics can be done in any order."),
             tags$li(strong("Notice the skill."), " Each item says whether it ",
@@ -589,10 +581,20 @@ ui <- fluidPage(
       )
     ),
 
-    do.call(navbarMenu, c(list(names(tab_groups)[1]), lapply(tab_groups[[1]], section_tab))),
-    do.call(navbarMenu, c(list(names(tab_groups)[2]), lapply(tab_groups[[2]], section_tab))),
-    do.call(navbarMenu, c(list(names(tab_groups)[3]), lapply(tab_groups[[3]], section_tab))),
-    do.call(navbarMenu, c(list(names(tab_groups)[4]), lapply(tab_groups[[4]], section_tab))),
+    # One tab per topic, in the order of `sections`; they wrap onto a second row
+    # on narrower screens such as an iPad.
+    section_tab("basics"),
+    section_tab("descriptive"),
+    section_tab("probability"),
+    section_tab("proportions"),
+    section_tab("fitting"),
+    section_tab("categorical"),
+    section_tab("normal"),
+    section_tab("ttests"),
+    section_tab("nonparam"),
+    section_tab("anova"),
+    section_tab("regression"),
+    section_tab("models"),
 
     # ======= SUMMARY ========================================================
     tabPanel(
