@@ -758,8 +758,8 @@ ui <- fluidPage(
     tags$script(src = paste0("https://cdnjs.cloudflare.com/ajax/libs/mathjax/",
                              "2.7.9/MathJax.js?config=TeX-AMS_CHTML"))
   ),
-  titlePanel("Biostatistics Notational Practice",
-             windowTitle = "Biostatistics Notational Practice"),
+  titlePanel("Biostatistics Notational Study Guide and Practice Questions",
+             windowTitle = "Biostatistics Notational Study Guide and Practice Questions"),
 
   tags$head(tags$style(HTML(paste0(
     ".action-button, .qbtn { color:#fff; background-color:", blue, "; border:none;",
@@ -822,7 +822,7 @@ ui <- fluidPage(
       fluidRow(
         column(
           width = 8,
-          h2("Reading statistical notation",
+          h2("Statistical notation",
              style = paste0("color:", teal, "; font-weight:700;")),
           p(style = "font-size:17px; line-height:1.6;",
             "Statistical formulas are written in a compact language. Each symbol ",
@@ -832,7 +832,7 @@ ui <- fluidPage(
             "unfamiliar."),
           p(style = "font-size:17px; line-height:1.6;",
             "This self-check helps you practise reading that language, using ",
-            "the formulas and symbols that come up in Biostatistics. It is not ",
+            "the formulas and symbols used in biostatistics. It is not ",
             "about R, and it is not graded."),
           br(),
           h4(style = paste0("color:", teal, ";"), "How it works"),
@@ -861,8 +861,8 @@ ui <- fluidPage(
           ),
           br(),
           p(style = "font-size:15px; color:#555;",
-            em("Have a calculator and your statistical tables beside you, and do ",
-               "the arithmetic on paper."))
+            em("Have a calculator beside you, and do the arithmetic on paper. ",
+               "Questions that need a statistical table show the part of it you need."))
         ),
         column(
           width = 4,
@@ -926,8 +926,8 @@ ui <- fluidPage(
             p(HTML(paste0(
               "If they are mostly <b>Translating</b>, say each formula as a full ",
               "sentence before you use it."))),
-            p("Then try your course's practice questions, which use the same ",
-              "notation.")
+            p("Then go back to other practice questions that use the same notation, ",
+              "and read each formula aloud before you calculate.")
           )
         )
       )
