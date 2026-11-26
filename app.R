@@ -356,6 +356,8 @@ fmt_num <- function(v) {
 }
 
 helpers <- new.env(parent = globalenv())
+# palette colours, so question data can use them
+helpers$teal <- teal; helpers$orange <- orange
 helpers$lst  <- function(x) paste(fmt_num(x), collapse = ", ")
 helpers$plus <- function(x) paste(fmt_num(x), collapse = " + ")
 helpers$sqs  <- function(x) {
@@ -574,6 +576,57 @@ helpers$tab_spearman <- function(n, rows = 6) {
              cells, ri, 1:2)
 }
 
+# ---- small normal curves for the Z-table questions ---------------------------
+# z_curve() draws a standard normal curve as SVG. In the question it shows only
+# the z value(s) and 0 (shade = FALSE); in the feedback it shades the answer in
+# teal and the tail(s) read from the table in orange, with a short key.
+# ans: c(lo, hi) for the answer area; tabs: list of c(lo, hi) for the table
+# tails; -Inf / Inf are allowed.
+helpers$z_curve <- function(marks, ans = NULL, tabs = NULL, key = "", shade = FALSE) {
+  X <- function(z) 15 + (pmax(pmin(z, 3.5), -3.5) + 3.5) / 7 * 200
+  Y <- function(z) 105 - 85 * exp(-z^2 / 2)
+  pts <- function(a, b) {
+    a <- max(a, -3.5); b <- min(b, 3.5)
+    zz <- unique(c(seq(a, b, by = 0.05), b))
+    paste0(sprintf("%.1f %.1f", X(zz), Y(zz)), collapse = " L")
+  }
+  area <- function(r, col) {
+    a <- max(r[1], -3.5); b <- min(r[2], 3.5)
+    # the shaded area, plus a solid bar under the axis so that thin tails still show
+    paste0("<path d='M", sprintf("%.1f", X(a)), " 105 L", pts(a, b), " L",
+           sprintf("%.1f", X(b)), " 105 Z' fill='", col, "' fill-opacity='0.6'/>",
+           "<rect x='", sprintf("%.1f", X(a)), "' y='106' width='", sprintf("%.1f", X(b) - X(a)),
+           "' height='5' fill='", col, "'/>")
+  }
+  s <- paste0("<svg viewBox='0 0 230 132' width='230' style='max-width:100%; height:auto;' ",
+              "xmlns='http://www.w3.org/2000/svg' font-family='sans-serif' font-size='11'>",
+              "<rect width='230' height='132' fill='#fff'/>")
+  if (shade) {
+    if (!is.null(ans)) s <- paste0(s, area(ans, teal))
+    for (r in tabs) s <- paste0(s, area(r, orange))
+  }
+  s <- paste0(s, "<path d='M", pts(-3.5, 3.5), "' fill='none' stroke='#333' stroke-width='1.5'/>",
+              "<line x1='15' y1='105' x2='215' y2='105' stroke='#333'/>",
+              "<line x1='", X(0), "' y1='105' x2='", X(0), "' y2='110' stroke='#333'/>",
+              "<text x='", X(0), "' y='125' text-anchor='middle' fill='#333'>0</text>")
+  marks <- sort(marks)
+  for (j in seq_along(marks)) {
+    m <- marks[j]; ty <- if (j %% 2 == 1) 11 else 23
+    s <- paste0(s, "<line x1='", sprintf("%.1f", X(m)), "' y1='", ty + 4, "' x2='", sprintf("%.1f", X(m)),
+                "' y2='105' stroke='#333' stroke-dasharray='3 3'/>",
+                "<text x='", sprintf("%.1f", X(m)), "' y='", ty, "' text-anchor='middle' fill='#333'>",
+                fmt_num(m), "</text>")
+  }
+  s <- paste0(s, "</svg>")
+  if (shade && nzchar(key))
+    s <- paste0(s, "<div class='zkey'>", key, "</div>")
+  paste0("<div class='zcurve'>", s, "</div>")
+}
+# Table excerpt and curve side by side; the curve wraps below on narrow screens.
+helpers$z_side <- function(table_html, curve_html)
+  paste0("<div class='zside'><div class='zside-tab'>", table_html,
+         "</div><div class='zside-curve'>", curve_html, "</div></div>")
+
 # ---- compact-letter-display question: random pattern, means plot as SVG ------
 # Patterns are valid letter displays for 3 or 4 groups (listed in order of the
 # group means). Groups differ significantly only when they share no letter.
@@ -785,6 +838,12 @@ ui <- fluidPage(
     ".stab-note { font-size:13px; color:#777; margin:-6px 0 8px 0; }",
     ".stab td.gap { text-align:center; color:#777; }",
     ".stab td.blank { background:#888; }",
+    ".zside { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; }",
+    ".zside-tab { flex:1 1 380px; min-width:0; }",
+    ".zside-curve { flex:0 1 240px; margin-top:10px; }",
+    ".zcurve { margin:8px 0; }",
+    ".zkey { font-size:14px; line-height:1.5; margin-top:4px; max-width:420px; }",
+    ".zkey .sw { display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-1px; margin-right:4px; }",
     ".numbox { display:inline-block; vertical-align:top; margin-right:24px; width:200px; }",
     ".step-btn { display:block; width:100%; text-align:left; white-space:normal;",
     "  font-size:17px; padding:10px 14px; margin:6px 0; background:#fff;",
