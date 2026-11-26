@@ -168,7 +168,8 @@ section_intro <- list(
     p(HTML(paste0(
       "One-sample, paired and two-sample t-tests: critical values ",
       "\\(t_{\\alpha(2),df}\\), standard errors, pooled variance \\(s_p^2\\), ",
-      "and degrees of freedom."))),
+      "degrees of freedom, P-values from tables and from R, and the ",
+      "confidence interval for a variance."))),
     p(HTML(paste0(
       "Subscripts carry a lot of information here: \\(\\alpha(2)\\) versus ",
       "\\(\\alpha(1)\\), \\(\\mu_0\\), and \\(SE_{\\bar{Y}_1 - \\bar{Y}_2}\\).")))
@@ -177,13 +178,14 @@ section_intro <- list(
     p(HTML(paste0(
       "What to do when assumptions fail: transformed data \\(Y'\\), natural ",
       "logs and back-transformation, and tests based on ranks: the ",
-      "Mann-Whitney U test and the sign test."))),
+      "Mann-Whitney U test (including its Z approximation) and the sign test."))),
     p("Ranking has its own rules, especially for tied values.")
   ),
   anova = tagList(
     p(HTML(paste0(
       "Comparing more than two means: sums of squares, mean squares, the ",
-      "\\(F\\) ratio, \\(R^2\\), and Tukey-Kramer comparisons."))),
+      "\\(F\\) ratio, \\(R^2\\), Tukey-Kramer comparisons, and the letters ",
+      "used to report them."))),
     p(HTML(paste0(
       "Keep three letters apart: \\(N\\) (all observations), \\(n_i\\) (one ",
       "group) and \\(k\\) (the number of groups).")))
@@ -191,14 +193,15 @@ section_intro <- list(
   regression = tagList(
     p(HTML(paste0(
       "Correlation \\(r\\) and regression \\(Y = a + bX\\): sums of squares ",
-      "and products, standard errors, Fisher's \\(z\\), predicted values ",
-      "\\(\\hat{Y}\\) and residuals."))),
+      "and products, covariance, standard errors, Fisher's \\(z\\), Spearman's ",
+      "\\(r_s\\), predicted values \\(\\hat{Y}\\) and residuals."))),
     p(HTML(paste0(
       "Roman letters (\\(r\\), \\(b\\)) are sample estimates; Greek letters ",
       "(\\(\\rho\\), \\(\\beta\\)) are population values.")))
   ),
   models = tagList(
-    p("Model statements such as RESPONSE = CONSTANT + A + B + A*B, adjusted ",
+    p("Model statements such as RESPONSE = CONSTANT + A + B + A*B, linear ",
+      "models with group indicators, blocks, interactions, adjusted ",
       HTML("\\(R^2\\)"), ", sample-size planning, effect size and power."),
     p("Model statements describe hypotheses. The plus signs mean 'include ",
       "this term', not 'add these numbers'.")
@@ -255,40 +258,48 @@ tips <- list(
     "\\(\\sigma\\) is the spread of single values; \\(\\sigma_{\\bar{Y}} = \\frac{\\sigma}{\\sqrt{n}}\\) is the spread of sample means.",
     "In \\(Z = \\frac{Y - \\mu}{\\sigma}\\), finish the top line before dividing, and keep the sign.",
     "An upper-tail table gives \\(Pr[Z > z]\\). Use symmetry for negative \\(z\\), and \\(1 -\\) the table value for 'less than'.",
-    "\\(\\geq\\) and \\(\\leq\\) include the observed count, which is why the \\(\\frac{1}{2}\\) correction is needed."
+    "\\(\\geq\\) and \\(\\leq\\) include the observed count, which is why the \\(\\frac{1}{2}\\) correction is needed.",
+    "For a continuous variable such as \\(Z\\), \\(>\\) and \\(\\geq\\) give the same probability; the difference matters only for counts."
   ),
   ttests = c(
     "\\(\\alpha(2)\\) is two-tailed and \\(\\alpha(1)\\) is one-tailed; \\(\\alpha(2) = 0.05\\) uses the same column as \\(\\alpha(1) = 0.025\\).",
     "In \\(t_{\\alpha(2),df}\\), the first part picks the column of the table and \\(df\\) picks the row.",
     "A subscript 0 (\\(\\mu_0\\), \\((\\mu_1 - \\mu_2)_0\\)) marks the value stated by the null hypothesis.",
     "Check whether you are given \\(s\\) or \\(s^2\\); pooled variance needs variances.",
-    "Paired designs: subtract within each pair first, then treat the differences \\(d\\) as one sample."
+    "Paired designs: subtract within each pair first, then treat the differences \\(d\\) as one sample.",
+    "A table gives only a few columns, so report \\(P\\) as lying between two \\(\\alpha\\) values, or below the smallest. In R, double a one-tail area to get a two-tailed P-value.",
+    "In \\(\\chi^2_{\\frac{\\alpha}{2}, df}\\), only \\(\\alpha\\) is divided by 2: the subscript says which column to use."
   ),
   nonparam = c(
     "A prime marks a modified value: \\(Y'\\) is transformed \\(Y\\). (\\(p'\\) has other meanings elsewhere.)",
     "\\(\\ln\\) is the natural log (the <b>ln</b> key, and <code>log()</code> in R); \\(e^x\\) undoes it.",
     "A transformation applies to every value, not only the awkward ones.",
     "Rank both groups together; tied values share the average of their ranks.",
-    "\\(\\max(U_1, U_2)\\) means the larger of the two."
+    "\\(\\max(U_1, U_2)\\) means the larger of the two.",
+    "R's <code>wilcox.test()</code> calls the statistic W; it is the same as U."
   ),
   anova = c(
     "Capital \\(N\\) is all observations; \\(n_i\\) is group \\(i\\); \\(k\\) is the number of groups.",
     "Each \\(MS\\) is its own \\(SS\\) divided by its own \\(df\\).",
     "Sums of squares add up (\\(SS_{total} = SS_{groups} + SS_{error}\\)); mean squares do not.",
     "In \\(F_{\\alpha(1), df_1, df_2}\\), \\(df_1\\) (groups) comes first and \\(df_2\\) (error) second.",
-    "A grand mean from group means is weighted by group size: \\(\\frac{\\sum (n_i \\bar{Y}_i)}{N}\\)."
+    "A grand mean from group means is weighted by group size: \\(\\frac{\\sum (n_i \\bar{Y}_i)}{N}\\).",
+    "After post hoc tests, sharing a letter means 'not significantly different', not 'equal'."
   ),
   regression = c(
     "Roman letters are estimates (\\(r\\), \\(b\\)); Greek letters are population values (\\(\\rho\\), \\(\\beta\\)).",
     "A hat means predicted: \\(\\hat{Y}\\) is on the line, and \\(e_i = Y_i - \\hat{Y}_i\\) is the residual.",
     "\\(S_{XY}\\) multiplies within each pair, then adds; \\(SS_X\\) squares, then adds.",
     "Square roots and fraction bars cover a lot here: finish what is under the roof first.",
+    "A slope has units (units of Y per unit of X); a correlation has none.",
     "The letter \\(R\\) means different things in different questions, so always read it in the context of the question: in Spearman's correlation, \\(R\\) is the ranks of X; in a Mann-Whitney test, \\(R_1\\) is a rank sum; in a contingency table, \\(R_i\\) is a row total; and \\(R^2\\) is the proportion of variation explained. Lower-case \\(r\\) is the correlation coefficient."
   ),
   models = c(
     "Model statements are not arithmetic: '+' means 'include this term'.",
     "A*B is the interaction: the effect of A depends on the level of B.",
-    "CONSTANT is the overall mean or intercept.",
+    "CONSTANT is the baseline: a mean or an intercept. In R's default output it is the reference group's mean.",
+    "In \\(\\hat{Y} = \\beta_0 + \\beta_1 G_2 + \\dots\\), each \\(G\\) is a 0/1 switch, not a mean. In R's default coding, \\(\\beta_0\\) is the reference group's mean and the other \\(\\beta\\)'s are differences from it.",
+    "A block is part of the design, not a control: the control is one level of the treatment.",
     "In \\(R^2_{adj}\\), \\(p\\) counts predictors; it is not a proportion.",
     "\\(\\beta\\) has two jobs: a population slope, and the Type II error rate in \\(Power = 1 - \\beta\\).",
     "Always round planned sample sizes up."
@@ -358,6 +369,287 @@ helpers$nice_sample <- function(n, from, to) {
     if (sum(y) %% n == 0) return(y)
   }
   y
+}
+
+# ---- excerpts ("slices") of statistical tables --------------------------------
+# Each table question shows a few rows and columns of the relevant table, laid
+# out like the printed course tables. The slice always contains the value the
+# question needs, plus neighbouring rows and columns, so students still have to
+# pick the right row and column. The position of the needed row and column
+# within the slice depends on the question's numbers, so it is not always in
+# the middle. All values are computed in R except the Spearman table.
+
+# Styling is in the .stab rules in the UI's CSS.
+
+# Pick a window of `size` positions out of 1:n_total that contains `target`.
+# `key` (any number) decides where in the window the target falls.
+slice_window <- function(target, n_total, size, key) {
+  size  <- min(size, n_total)
+  start <- target - (abs(round(key)) %% size)
+  start <- max(1, min(start, n_total - size + 1))
+  start:(start + size - 1)
+}
+
+# Union of windows around several targets, sorted; NA marks a gap.
+slice_index <- function(targets, n_total, size, key) {
+  idx <- integer(0)
+  for (j in seq_along(targets))
+    idx <- c(idx, slice_window(targets[j], n_total, size, key + 3 * j))
+  idx <- sort(unique(idx))
+  out <- integer(0)
+  for (j in seq_along(idx)) {
+    if (j > 1 && idx[j] > idx[j - 1] + 1) out <- c(out, NA)
+    out <- c(out, idx[j])
+  }
+  out
+}
+
+# Build one HTML table. cells: character matrix for the full table;
+# ri, ci: row and column indices to show (NA = gap). blank: logical matrix of
+# cells shown as grey (no value exists).
+slice_html <- function(title, corner, col_head, col_labels, row_labels, cells,
+                       ri, ci, blank = NULL, extra_head = NULL) {
+  ncol_shown <- length(ci)
+  h <- "<div class='stab-wrap'><table class='stab'>"
+  h <- paste0(h, "<tr><th colspan='", ncol_shown + 1, "' class='stab-title'>",
+              title, "</th></tr>")
+  if (!is.null(col_head))
+    h <- paste0(h, "<tr><th></th><th colspan='", ncol_shown, "'>", col_head, "</th></tr>")
+  if (!is.null(extra_head)) {
+    # extra_head: list(label = , values = ) for a second header row (t table)
+    h <- paste0(h, "<tr><th>", extra_head$label, "</th>")
+    for (c in ci) h <- paste0(h, "<th>",
+                              if (is.na(c)) "..." else extra_head$values[c], "</th>")
+    h <- paste0(h, "</tr>")
+  }
+  h <- paste0(h, "<tr><th>", corner, "</th>")
+  for (c in ci) h <- paste0(h, "<th>",
+                            if (is.na(c)) "..." else col_labels[c], "</th>")
+  h <- paste0(h, "</tr>")
+  for (r in ri) {
+    if (is.na(r)) {
+      h <- paste0(h, "<tr>", paste(rep("<td class='gap'>...</td>", ncol_shown + 1),
+                                   collapse = ""), "</tr>")
+      next
+    }
+    h <- paste0(h, "<tr><th>", row_labels[r], "</th>")
+    for (c in ci) {
+      if (is.na(c)) { h <- paste0(h, "<td class='gap'>...</td>"); next }
+      if (!is.null(blank) && blank[r, c])
+        h <- paste0(h, "<td class='blank'></td>")
+      else h <- paste0(h, "<td>", cells[r, c], "</td>")
+    }
+    h <- paste0(h, "</tr>")
+  }
+  paste0(h, "</table></div>")
+}
+
+f2 <- function(x, d) formatC(x, format = "f", digits = d)
+lab <- function(x) trimws(formatC(x, format = "fg", digits = 6))
+
+# cache full tables so each is computed once
+tab_cache <- new.env()
+cached <- function(name, expr_fun) {
+  if (is.null(tab_cache[[name]])) assign(name, expr_fun(), envir = tab_cache)
+  tab_cache[[name]]
+}
+
+# t distribution: critical values, alpha(2) and alpha(1) header rows
+t_df  <- c(1:50, 500)
+t_a2  <- c(0.2, 0.15, 0.1, 0.05, 0.02, 0.01, 0.005, 0.001, 0.0005, 0.0001)
+helpers$tab_t <- function(df, rows = 5) {
+  cells <- cached("t", function() outer(t_df, t_a2, function(d, a) f2(qt(1 - a / 2, d), 2)))
+  ri <- slice_index(match(df, t_df), length(t_df), rows, sum(df) * 7)
+  paste0(slice_html("Critical values of the t-distribution for two-tailed, &alpha;(2), and one-tailed, &alpha;(1), tests",
+             "df &nbsp; &alpha;(1):", NULL, lab(t_a2 / 2), t_df, cells,
+             ri, seq_along(t_a2),
+             extra_head = list(label = "&alpha;(2):", values = lab(t_a2))),
+         "<div class='stab-note'>Wide table: scroll sideways to see every column.</div>")
+}
+
+# chi-squared: alpha = area to the right
+chi_df <- 1:40
+chi_a  <- c(0.999, 0.995, 0.99, 0.975, 0.95, 0.05, 0.025, 0.01, 0.005, 0.001)
+helpers$tab_chi <- function(df, rows = 5) {
+  cells <- cached("chi", function() outer(chi_df, chi_a, function(d, a) f2(qchisq(a, d, lower.tail = FALSE), 4)))
+  ri <- slice_index(match(df, chi_df), length(chi_df), rows, sum(df) * 5)
+  paste0(slice_html(paste0("Critical values of the &chi;<sup>2</sup> distribution<br>",
+                    "<span style='font-weight:normal; font-style:italic;'>&alpha; = area under the curve to the RIGHT of the critical value, ",
+                    "Pr[&chi;<sup>2</sup> &ge; critical value]</span>"),
+             "df", NULL, lab(chi_a), chi_df, cells, ri, seq_along(chi_a)),
+         "<div class='stab-note'>Wide table: scroll sideways to see every column.</div>")
+}
+
+# standard normal: upper-tail probabilities, rows a.b, columns hundredths
+z_rows <- seq(0, 4, by = 0.1)
+z_cols <- seq(0, 0.09, by = 0.01)
+helpers$tab_z <- function(z, rows = 5) {
+  cells <- cached("z", function() outer(z_rows, z_cols, function(a, c) f2(pnorm(a + c, lower.tail = FALSE), 6)))
+  targ <- match(round(floor(round(abs(z), 2) * 10 + 1e-9) / 10, 1), round(z_rows, 1))
+  ri <- slice_index(targ, length(z_rows), rows, round(sum(abs(z)) * 100))
+  paste0(slice_html("Z-Score Probabilities: Pr[Z &gt; z] (upper tail; in R: <code>pnorm(z, lower.tail = FALSE)</code>)",
+             "<i>a.b</i>", "Hundredth Decimal Place of Z Score (c)",
+             lab(round(z_cols, 2)), lab(round(z_rows, 1)),
+             cells, ri, seq_along(z_cols)),
+         "<div class='stab-note'>Wide table: scroll sideways to see every column.</div>")
+}
+
+# F distribution: alpha(1) = 0.05; rows denominator df, columns numerator df
+f_num <- c(1:10, 12, 15, 20, 30, 40, 60, 100, 200, 400, 1000)
+f_den <- c(1:30, 40, 50, 60, 70, 80, 90, 100, 200, 400)
+helpers$tab_f <- function(num, den, rows = 5, cols = 5) {
+  cells <- cached("f", function() outer(f_den, f_num, function(d2, d1) f2(qf(0.95, d1, d2), 2)))
+  key <- sum(num) * 3 + sum(den)
+  ri <- slice_index(match(den, f_den), length(f_den), rows, key)
+  ci <- slice_index(match(num, f_num), length(f_num), cols, key + 1)
+  slice_html("Critical value of F for &alpha;(1) = 0.05 or &alpha;(2) = 0.1",
+             "Denominator df", "Numerator df", f_num, f_den, cells, ri, ci)
+}
+
+# Tukey-Kramer q, alpha = 0.05
+q_df <- 10:50
+q_k  <- 2:15
+helpers$tab_q <- function(k, df, rows = 5, cols = 5) {
+  cells <- cached("q", function() outer(q_df, q_k, function(d, kk) f2(qtukey(0.95, kk, d) / sqrt(2), 2)))
+  key <- k * 3 + df
+  ri <- slice_index(match(df, q_df), length(q_df), rows, key)
+  ci <- slice_index(match(k, q_k), length(q_k), cols, key + 1)
+  slice_html("Critical values of the Tukey-Kramer q-distribution for &alpha; = 0.05",
+             "df", "Number of groups (k)", q_k, q_df, cells, ri, ci)
+}
+
+# Mann-Whitney U: two panels, alpha(2) = 0.05 and 0.01; rows n2, columns n1
+u_n <- 3:15
+u_crit <- function(n1, n2, a) {
+  cc <- 0:(n1 * n2)
+  v <- cc[pwilcox(cc - 1, n1, n2, lower.tail = FALSE) <= a / 2]
+  if (length(v)) min(v) else NA
+}
+helpers$tab_u <- function(n1, n2, size = 5) {
+  key <- n1 * 3 + n2
+  ri <- slice_index(match(n2, u_n), length(u_n), size, key)
+  ci <- slice_index(match(n1, u_n), length(u_n), size, key + 1)
+  panel <- function(a) {
+    m <- cached(paste0("u", a), function() outer(u_n, u_n, Vectorize(function(r2, c1) u_crit(c1, r2, a))))
+    slice_html(paste0("&alpha;(2) = ", a), "<i>n2</i>", "<i>n1</i>",
+               u_n, u_n, ifelse(is.na(m), "", as.character(m)), ri, ci, blank = is.na(m))
+  }
+  paste0("<div class='stab-cap'>Critical U values for the Mann-Whitney U test ",
+         "(if the larger of U1 and U2 &ge; Ucrit, then reject H0 at &alpha;)</div>",
+         panel(0.05), panel(0.01))
+}
+
+# Spearman: values copied from the course table (not computed)
+spearman_tab <- data.frame(
+  n = 5:100,
+  c05 = c(0.9, 0.943, 0.821, 0.762, 0.7, 0.648, 0.618, 0.587, 0.56, 0.538, 0.521,
+          0.503, 0.485, 0.472, 0.458, 0.447, 0.434, 0.425, 0.415, 0.406, 0.398,
+          0.389, 0.382, 0.375, 0.368, 0.362, 0.356, 0.35, 0.345, 0.339, 0.334,
+          0.329, 0.325, 0.32, 0.316, 0.312, 0.308, 0.305, 0.301, 0.297, 0.294,
+          0.291, 0.288, 0.285, 0.282, 0.279, 0.276, 0.273, 0.271, 0.268, 0.266,
+          0.263, 0.261, 0.259, 0.256, 0.254, 0.252, 0.25, 0.248, 0.246, 0.244,
+          0.242, 0.241, 0.239, 0.237, 0.235, 0.234, 0.232, 0.23, 0.229, 0.227,
+          0.226, 0.224, 0.223, 0.221, 0.22, 0.219, 0.217, 0.216, 0.215, 0.213,
+          0.212, 0.211, 0.21, 0.208, 0.207, 0.206, 0.205, 0.204, 0.203, 0.202,
+          0.201, 0.2, 0.199, 0.198, 0.197),
+  c01 = c(NA, 1, 0.929, 0.881, 0.833, 0.782, 0.755, 0.72, 0.692, 0.67, 0.645,
+          0.626, 0.61, 0.593, 0.578, 0.564, 0.55, 0.539, 0.528, 0.516, 0.506,
+          0.497, 0.487, 0.479, 0.471, 0.464, 0.456, 0.449, 0.443, 0.436, 0.43,
+          0.424, 0.419, 0.413, 0.408, 0.403, 0.398, 0.393, 0.389, 0.385, 0.38,
+          0.376, 0.372, 0.369, 0.365, 0.361, 0.358, 0.354, 0.351, 0.348, 0.345,
+          0.342, 0.339, 0.336, 0.333, 0.33, 0.327, 0.325, 0.322, 0.32, 0.317,
+          0.315, 0.313, 0.31, 0.308, 0.306, 0.304, 0.302, 0.3, 0.298, 0.296,
+          0.294, 0.292, 0.29, 0.288, 0.286, 0.285, 0.283, 0.281, 0.28, 0.278,
+          0.276, 0.275, 0.273, 0.272, 0.27, 0.269, 0.267, 0.266, 0.264, 0.263,
+          0.262, 0.26, 0.259, 0.258, 0.257))
+helpers$spearman_tab <- spearman_tab
+helpers$tab_spearman <- function(n, rows = 6) {
+  cells <- cbind(as.character(spearman_tab$c05),
+                 ifelse(is.na(spearman_tab$c01), "", as.character(spearman_tab$c01)))
+  ri <- slice_index(match(n, spearman_tab$n), nrow(spearman_tab), rows, n * 7)
+  slice_html(paste0("Spearman Rank Critical Values, for &alpha; = 0.05 and &alpha; = 0.01 ",
+                    "(two-tailed equivalent).<br><span style='font-weight:normal;'>Reject H0 of &rho; = 0 ",
+                    "if the observed <i>r</i> is &ge; the critical value below, for a given n.</span>"),
+             "n", NULL, c("&alpha; = 0.05", "&alpha; = 0.01"), spearman_tab$n,
+             cells, ri, 1:2)
+}
+
+# ---- compact-letter-display question: random pattern, means plot as SVG ------
+# Patterns are valid letter displays for 3 or 4 groups (listed in order of the
+# group means). Groups differ significantly only when they share no letter.
+cld_patterns <- list(
+  c("a", "ab", "b"), c("a", "a", "b"), c("a", "b", "b"), c("a", "b", "c"),
+  c("a", "ab", "b", "c"), c("a", "a", "b", "b"), c("a", "ab", "bc", "c"),
+  c("a", "ab", "ab", "b"), c("a", "b", "bc", "c"))
+helpers$cld_setup <- function() {
+  pat <- cld_patterns[[sample(length(cld_patterns), 1)]]
+  k <- length(pat)
+  step <- sample(c(3, 4, 5), 1)
+  base <- sample(10:30, 1)
+  lev <- c(a = 0, b = 1, c = 2)
+  # each group's mean sits at the average level of its letters, plus a little noise
+  m <- vapply(pat, function(s) mean(lev[strsplit(s, "")[[1]]]), 0)
+  means <- round(base + step * m + runif(k, -0.15, 0.15) * step, 1)
+  half <- round(step * runif(k, 0.35, 0.6), 1)
+  # groups are numbered left to right in the plot, in order of their means
+  pairs <- combn(k, 2)
+  shares <- apply(pairs, 2, function(p)
+    length(intersect(strsplit(pat[p[1]], "")[[1]], strsplit(pat[p[2]], "")[[1]])) > 0)
+  lab <- function(idx) paste(apply(pairs[, idx, drop = FALSE], 2, paste, collapse = " vs "),
+                             collapse = ", ")
+  only <- function(idx) if (length(idx) == 1) paste0("Only one pair: ", lab(idx)) else
+    paste0("Only these pairs: ", lab(idx))
+  differ <- which(!shares)
+  ok <- if (length(differ) == ncol(pairs)) "Every pair of groups" else only(differ)
+  # distractors: treat any different letter string as different; none; the sharing pairs; all
+  naive <- which(pat[pairs[1, ]] != pat[pairs[2, ]])
+  cand <- c(if (length(naive) && !identical(naive, differ)) {
+              if (length(naive) == ncol(pairs)) "Every pair of groups" else only(naive) },
+            "None: no two groups differ significantly",
+            if (any(shares) && !all(shares)) only(which(shares)),
+            if (length(differ) < ncol(pairs)) "Every pair of groups",
+            if (length(differ) > 1) only(differ[1]),
+            # fallbacks so there are always three distinct wrong options
+            vapply(seq_len(ncol(pairs)), function(j) only(j), ""),
+            vapply(seq_len(ncol(pairs)), function(j) only(setdiff(seq_len(ncol(pairs)), j)), ""))
+  cand <- setdiff(unique(cand), ok)[1:3]
+  # SVG means plot
+  lo <- min(means - half); hi <- max(means + half)
+  ticks <- pretty(c(lo - 1, hi + 1), n = 4)
+  W <- 120 + 90 * k; y0 <- 200; y1 <- 30
+  ys <- function(v) y0 - (v - min(ticks)) / (max(ticks) - min(ticks)) * (y0 - y1)
+  xs <- 60 + 90 * seq_len(k) - 30
+  g <- paste0("<div style='margin:10px 0;'><svg viewBox='0 0 ", W, " 250' width='", W,
+              "' style='max-width:100%; height:auto;' xmlns='http://www.w3.org/2000/svg' ",
+              "font-family='sans-serif' font-size='13'><rect width='", W, "' height='250' fill='#fff'/>",
+              "<line x1='60' y1='", y1 - 10, "' x2='60' y2='", y0, "' stroke='#333'/>",
+              "<line x1='60' y1='", y0, "' x2='", W - 20, "' y2='", y0, "' stroke='#333'/>",
+              "<text x='18' y='115' text-anchor='middle' transform='rotate(-90 18 115)'>Mean response</text>")
+  for (t in ticks) g <- paste0(g, "<line x1='55' y1='", round(ys(t)), "' x2='60' y2='", round(ys(t)),
+                               "' stroke='#333'/><text x='50' y='", round(ys(t)) + 4,
+                               "' text-anchor='end'>", t, "</text>")
+  for (j in seq_len(k)) {
+    x <- xs[j]; tp <- round(ys(means[j] + half[j])); bt <- round(ys(means[j] - half[j]))
+    g <- paste0(g,
+      "<line x1='", x, "' y1='", tp, "' x2='", x, "' y2='", bt, "' stroke='#555' stroke-width='1.5'/>",
+      "<line x1='", x - 8, "' y1='", tp, "' x2='", x + 8, "' y2='", tp, "' stroke='#555' stroke-width='1.5'/>",
+      "<line x1='", x - 8, "' y1='", bt, "' x2='", x + 8, "' y2='", bt, "' stroke='#555' stroke-width='1.5'/>",
+      "<circle cx='", x, "' cy='", round(ys(means[j])), "' r='6' fill='#569BBD'/>",
+      "<text x='", x, "' y='", tp - 10, "' text-anchor='middle' font-size='16' font-weight='bold' fill='#E07B39'>",
+      pat[j], "</text><text x='", x, "' y='220' text-anchor='middle'>Group ", j, "</text>")
+  }
+  g <- paste0(g, "<text x='", W / 2 + 20, "' y='243' text-anchor='middle' fill='#555' font-size='12'>",
+              "Points are group means; bars are 95% confidence intervals</text></svg></div>")
+  same <- if (any(shares)) lab(which(shares)) else "none"
+  dif  <- if (length(differ)) lab(differ) else "none"
+  list(svg = g, ok = ok, w = cand, k = k,
+       letters = paste0("group ", seq_len(k), " '", pat, "'", collapse = ", "),
+       same = same, dif = dif,
+       note = if (any(nchar(pat) > 1)) paste0("A group with two letters is not significantly ",
+         "different from groups carrying either letter, yet those groups can still differ from ",
+         "each other. This is not a contradiction: sharing a letter means 'not significantly ",
+         "different', not 'equal', so the rule 'if A = B and B = C, then A = C' does not apply.") else
+         "Sharing a letter means 'not significantly different', not 'equal'.")
 }
 
 fill <- function(txt, env) {
@@ -478,11 +770,21 @@ ui <- fluidPage(
     ".qbtn-light:hover { color:#fff; }",
     ".skilltag { font-size:14px; color:#666; margin-bottom:8px; }",
     ".prompt { font-size:18px; line-height:1.6; margin-bottom:14px; }",
-    ".qcard .radio label { font-size:17px; line-height:1.5; padding:8px 0 8px 26px; }",
+    ".qcard .radio label { display:block; font-size:17px; line-height:1.5; padding:8px 0 8px 26px; }",
     ".qcard .radio input[type=radio] { transform:scale(1.4); margin-top:8px; }",
     ".qcard .shiny-input-container { margin-bottom:6px; }",
     ".qcard input[type=number] { font-size:18px; height:44px; }",
     ".qcard .control-label { font-size:17px; font-weight:normal; }",
+    ".stab-wrap { overflow-x:auto; margin:10px 0; }",
+    ".stab { border-collapse:collapse; font-size:13px; background:#fff; font-variant-numeric:tabular-nums; }",
+    ".stab th, .stab td { border:1px solid #999; padding:2px 6px; white-space:nowrap; }",
+    ".stab td { text-align:right; }",
+    ".stab th { background:#eee; text-align:center; }",
+    ".stab th.stab-title { white-space:normal; font-size:14px; }",
+    ".stab-cap { font-weight:bold; font-size:14px; margin:10px 0 0 0; }",
+    ".stab-note { font-size:13px; color:#777; margin:-6px 0 8px 0; }",
+    ".stab td.gap { text-align:center; color:#777; }",
+    ".stab td.blank { background:#888; }",
     ".numbox { display:inline-block; vertical-align:top; margin-right:24px; width:200px; }",
     ".step-btn { display:block; width:100%; text-align:left; white-space:normal;",
     "  font-size:17px; padding:10px 14px; margin:6px 0; background:#fff;",
